@@ -56,11 +56,16 @@ function sync_podcast() {
 
         // Create an iframe containing the episode audio player
         $episode_link = $item->link;
+        $episode_ahref = "<a href='" . $episode_link . "'>" . $episode_title . "</a>";
+        // Rewrite the episode link adding '/embed' after 'esdlv'
+        $episode_link = str_replace("esdlv", "esdlv/embed", $episode_link);
         $episode_iframe = "<div class='podcast'>
             <iframe src='" . $episode_link . "' height='102px' width='463px' frameborder='0' scrolling='no'></iframe>
             </div>";
 
         echo "\n Episode iframe: " . $episode_iframe . "\n";
+
+        wp_set_current_user( 1 );
 
         // Convert $item->pubDate to the format [ Y-m-d H:i:s ]
         $episode_date = date("Y-m-d H:i:s", strtotime($item->pubDate));
