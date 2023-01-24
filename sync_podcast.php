@@ -25,7 +25,6 @@ function sync_podcast_register_route() {
 }
 add_action('rest_api_init', 'sync_podcast_register_route');
 
-
 function prepare_post( $item, $episode_title ) {
     // Create an iframe containing the episode audio player
     $episode_link = $item->link;
@@ -60,12 +59,12 @@ function sync_podcast() {
     $i = 0;
     foreach ($feed->channel->item as $item) {
         $episode_title = $item->title;
+        echo($episode_title);
         $episode_post = get_page_by_title($episode_title, OBJECT, 'post');
-        echo "\n Episode id: " . $episode_post->ID;
+        echo "\n<br>Episode id: " . $episode_post->ID;
 
-        // Version 0.2 after post_id: 4597
-        if ( !$episode_post && $episode_post->ID > 4597 ) {
-            $post_info = prepare_post( $item );
+        if ( !$episode_post ) {
+            $post_info = prepare_post( $item, $episode_title );
             $post_content = $post_info[0];
             $post_date = $post_info[1];
             // Create a new post entry
@@ -83,6 +82,7 @@ function sync_podcast() {
 
             // Echo the post id
             echo '<br>The post id is: ' . $post_id;
+            break;
 
         } else {
             echo '<br>The episode is already in the database';
