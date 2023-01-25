@@ -59,9 +59,9 @@ function sync_podcast() {
     $i = 0;
     foreach ($feed->channel->item as $item) {
         $episode_title = $item->title;
-        echo($episode_title);
-        $episode_post = get_page_by_title($episode_title, OBJECT, 'post');
-        echo "\n<br>Episode id: " . $episode_post->ID;
+        echo "Episode title: " . $episode_title;
+        $episode_post = get_page_by_title( html_entity_decode( $episode_title ), OBJECT, 'post' );
+        echo "\nPost del episodio: " . $episode_post->ID;
 
         if ( !$episode_post ) {
             $post_info = prepare_post( $item, $episode_title );
@@ -80,16 +80,10 @@ function sync_podcast() {
                 'post_date' => $post_date
             ));
 
-            // Echo the post id
-            echo '<br>The post id is: ' . $post_id;
-            break;
-
         } else {
             echo '<br>The episode is already in the database';
             break;
         }
     }
-
 }
-
 ?>
